@@ -12,6 +12,11 @@ from django.urls import reverse_lazy
 
 from .models import Photo
 
+from .AES_cipher import AESCipher
+
+from .uploadhandler import EncryptedFileUploadHandler
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.contrib.auth.models import User
 class PhotoListView(ListView):
     
     model = Photo     
@@ -44,9 +49,17 @@ class PhotoDetailView(DetailView):
 
     template_name = 'photoapp/detail.html'
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the user
+        context['user_id'] = User.objects.all()
+        print(context['user_id'])
+        return context
+
     context_object_name = 'photo'
 
-
+#@method_decorator(csrf_exempt, 'dispatch')
 class PhotoCreateView(LoginRequiredMixin, CreateView):
 
     model = Photo
@@ -57,11 +70,27 @@ class PhotoCreateView(LoginRequiredMixin, CreateView):
     
     success_url = reverse_lazy('photo:list')
 
+    # @method_decorator(csrf_protect)
+    # def post(self, request, *args, **kwargs):
+    #     request.upload_handlers = [
+    #         EncryptedFileUploadHandler(request=request),
+            
+    #     ]  
+    #     return self.form_valid(request)
     def form_valid(self, form):
 
         form.instance.submitter = self.request.user
         
+        key = 'y6lLepZQpppdzjkeG5MhUaaaRCychpDd'
+        cipher = AESCipher(key)
+        EncryptedImg = cipher.encrypt(self.request.FILES['image'])
+        print(EncryptedImg)
+        self.request.FILES.update({'image': EncryptedImg})
+        print(self.request.FILES['image'])
+        form.save()
         return super().form_valid(form)
+
+    
 
 class UserIsSubmitter(UserPassesTestMixin):
 
