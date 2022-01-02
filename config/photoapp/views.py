@@ -9,14 +9,12 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from django.urls import reverse_lazy
-from django.core.files.uploadhandler import MemoryFileUploadHandler, TemporaryFileUploadHandler
 from .models import Photo
 
 from .AES_cipher import AESCipher
-from django.utils.decorators import method_decorator
-from .uploadhandler import EncryptedFileUploadHandler
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
+
 from django.contrib.auth.models import User
+
 class PhotoListView(ListView):
     
     model = Photo     
@@ -59,7 +57,7 @@ class PhotoDetailView(DetailView):
 
     context_object_name = 'photo'
 
-@method_decorator(csrf_exempt, 'dispatch')
+
 class PhotoCreateView(LoginRequiredMixin, CreateView):
 
     model = Photo
@@ -70,7 +68,6 @@ class PhotoCreateView(LoginRequiredMixin, CreateView):
     
     success_url = reverse_lazy('photo:list')   
     
-    #@method_decorator(csrf_protect)
     def form_valid(self, form):
         form.instance.submitter = self.request.user
 

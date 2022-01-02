@@ -1,11 +1,8 @@
-import base64
 import hashlib
 from Crypto import Random
 from Crypto.Cipher import AES
 from Crypto.Util import Padding
 from PIL import Image
-from six import BytesIO
-from django.core.files.uploadedfile import InMemoryUploadedFile
 
 class AESCipher(object):
     def __init__(self, key):
