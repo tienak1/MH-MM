@@ -31,7 +31,8 @@
 
 <div class="modal fade" id="share" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <form>
+    <form method="POST", action="/photo/{{photo.id}}/share/">
+      {% csrf_token %}
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Share Photo For</h5>
@@ -42,7 +43,7 @@
         <div class="modal-body">
           {% for u in user_id %}
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <input class="form-check-input" type="checkbox" value="" id="{{u.id}}">
               <label class="form-check-label" for="defaultCheck1">
                 {{u.id}} - {{u.username}}
               </label>
@@ -50,7 +51,7 @@
           {% endfor %}
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Share</button>
+          <button type="submit" class="btn btn-primary">Share</button>
         </div>
       </div>
     </form>

@@ -1,5 +1,6 @@
 '''Photo app generic views'''
-
+from django.shortcuts import render
+from django.db import models
 from django.shortcuts import get_object_or_404
 
 from django.core.exceptions import PermissionDenied
@@ -11,13 +12,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from .models import Photo
 
+<<<<<<< Updated upstream
 from .AES_cipher import AESCipher
 
+=======
+#from .AES_cipher import AESCipher
+from django.utils.decorators import method_decorator
+#from .uploadhandler import EncryptedFileUploadHandler
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+>>>>>>> Stashed changes
 from django.contrib.auth.models import User
 
 class PhotoListView(ListView):
     
-    model = Photo     
+    model = Photo
 
     template_name = 'photoapp/list.html'
 
@@ -48,11 +56,8 @@ class PhotoDetailView(DetailView):
     template_name = 'photoapp/detail.html'
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the user
-        context['user_id'] = User.objects.all()
-        print(context['user_id'])
+        context["user_id"] = User.objects.all()
         return context
 
     context_object_name = 'photo'
@@ -112,3 +117,6 @@ class PhotoDeleteView(UserIsSubmitter, DeleteView):
     model = Photo
 
     success_url = reverse_lazy('photo:list')
+
+def PhotoShare(resquest):
+    print(resquest.POST)

@@ -1,5 +1,6 @@
 '''Photoapp Models'''
 
+from django.contrib.auth.models import User
 from django.db import models
 
 from django.contrib.auth import get_user_model
@@ -22,3 +23,7 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.title
+
+class Share(models.Model):
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
