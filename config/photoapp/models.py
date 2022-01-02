@@ -25,5 +25,7 @@ class Photo(models.Model):
         return self.title
 
 class Share(models.Model):
+
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+
+    user = models.ManyToManyField(get_user_model(), related_name = 'users')

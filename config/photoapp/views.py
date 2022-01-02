@@ -10,17 +10,12 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from django.urls import reverse_lazy
-from .models import Photo
 
-<<<<<<< Updated upstream
+from .models import Photo, Share
+from .forms import ShareForm
+
 from .AES_cipher import AESCipher
 
-=======
-#from .AES_cipher import AESCipher
-from django.utils.decorators import method_decorator
-#from .uploadhandler import EncryptedFileUploadHandler
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
->>>>>>> Stashed changes
 from django.contrib.auth.models import User
 
 class PhotoListView(ListView):
@@ -118,5 +113,10 @@ class PhotoDeleteView(UserIsSubmitter, DeleteView):
 
     success_url = reverse_lazy('photo:list')
 
-def PhotoShare(resquest):
-    print(resquest.POST)
+class PhotoShareView(UserIsSubmitter, CreateView):
+    
+    template_name = 'photoapp/share.html'
+    
+    form_class = ShareForm
+
+    success_url = reverse_lazy('photo:list')

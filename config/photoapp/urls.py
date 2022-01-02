@@ -9,7 +9,7 @@ from .views import (
     PhotoCreateView,
     PhotoUpdateView,
     PhotoDeleteView,
-    PhotoShare
+    PhotoShareView
 )
 
 app_name = 'photo'
@@ -27,5 +27,5 @@ urlpatterns = [
 
     path('photo/<int:pk>/delete/', PhotoDeleteView.as_view(), name='delete'),
 
-    path('photo/<int:pk>/share/', PhotoShare, name='share')
+    path('photo/<int:pk>/share/', PhotoShareView.as_view(), name='share')
 ]
