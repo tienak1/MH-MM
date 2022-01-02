@@ -35,7 +35,7 @@ python -m venv .venv
 Activate it
 
 ```bash
-source .venv/bin/activate
+source .venv/Scripts/activate
 ```
 
 ![Virtual environment activated](https://uploads.sitepoint.com/wp-content/uploads/2021/06/1622669492venv.png)
@@ -44,6 +44,10 @@ Install all the project dependencies with the `requirements.txt` with the follow
 
 ```bash
 pip install -r requirements.txt
+```
+
+```bash
+cd config
 ```
 
 Run the migrations:
