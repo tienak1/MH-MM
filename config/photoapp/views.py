@@ -1,6 +1,4 @@
 '''Photo app generic views'''
-from django.shortcuts import render
-from django.db import models
 from django.shortcuts import get_object_or_404
 
 from django.core.exceptions import PermissionDenied
@@ -11,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from django.urls import reverse_lazy
 
-from .models import Photo, Share
+from .models import Photo
 from .forms import ShareForm
 
 from .AES_cipher import AESCipher
@@ -113,10 +111,12 @@ class PhotoDeleteView(UserIsSubmitter, DeleteView):
 
     success_url = reverse_lazy('photo:list')
 
-class PhotoShareView(UserIsSubmitter, CreateView):
+class PhotoShareView(UserIsSubmitter, UpdateView):
     
     template_name = 'photoapp/share.html'
-    
+
+    model = Photo
+
     form_class = ShareForm
 
     success_url = reverse_lazy('photo:list')

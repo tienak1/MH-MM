@@ -1,6 +1,5 @@
 '''Photoapp Models'''
 
-from django.contrib.auth.models import User
 from django.db import models
 
 from django.contrib.auth import get_user_model
@@ -19,13 +18,15 @@ class Photo(models.Model):
 
     submitter = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
+    share = models.ManyToManyField(get_user_model(), related_name='shared_users', blank=True)
+
     tags = TaggableManager() 
 
     def __str__(self):
         return self.title
 
-class Share(models.Model):
+# class Share(models.Model):
 
-    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+#     photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
 
-    user = models.ManyToManyField(get_user_model(), related_name = 'users')
+#     user = models.ManyToManyField(get_user_model(), related_name = 'users')
