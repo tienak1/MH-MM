@@ -19,7 +19,6 @@ from .AES import AESCipher, Matrix
 
 from django.http import HttpResponse
 
-import redis
 
 # class PhotoDecrypt():
 
@@ -143,6 +142,9 @@ class PhotoShareView(UserIsSubmitter, UpdateView):
 
     success_url = reverse_lazy('photo:list')
 
+import base64
+from PIL import Image 
+import io
 class ImgThumbnail(PhotoDetailView):
 
     template_name = 'photoapp/detail.html'
@@ -156,8 +158,12 @@ class ImgThumbnail(PhotoDetailView):
         context = super().get_context_data(**kwargs)
         Ikey = Matrix.string2matrix(self.get_photo().key)
         cipher = AESCipher()
-        img_data = cipher.img_decrypt(self.get_photo().image.path, Ikey)
-        context["dec_img"] = img_data
-        r =  redis.StrictRedis()
-        r.set("dec_img",img_data)
+        #img_data = cipher.img_decrypt(self.get_photo().image.path, Ikey)
+        img_data = Image.open("D:\BaiTap\MATMA\DA1\MH-MM\config\photoapp\ktlt.jpg")
+        data = io.BytesIO()
+        img_data.save(data, "JPEG")
+        encoded_img = base64.b64encode(data.getvalue())
+        decoded_img = encoded_img.decode('utf-8')
+        img = f"data:image/jpeg;base64,{decoded_img}"
+        context["dec_img"] = img
         return context
