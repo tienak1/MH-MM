@@ -8,7 +8,7 @@ class UserModelChoiceField(forms.ModelMultipleChoiceField):
         return "%s - %s" % (obj.id,obj.username)
 
 class ShareForm(forms.ModelForm):
-    share = UserModelChoiceField(queryset=get_user_model().objects.all(),\
+    share = UserModelChoiceField(queryset=get_user_model().objects.all().select_related('submitter').defer('submitter__submitter'),\
         widget = forms.CheckboxSelectMultiple(), required = False)
     # def __init__(self, *args, **kwargs):
     #     super(ShareForm, self).__init__(*args, **kwargs)

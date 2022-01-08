@@ -48,11 +48,6 @@ class PhotoDetailView(DetailView):
 
     template_name = 'photoapp/detail.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["user_id"] = User.objects.all()
-        return context
-
     context_object_name = 'photo'
 
 

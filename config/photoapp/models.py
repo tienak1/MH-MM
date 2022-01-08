@@ -16,7 +16,7 @@ class Photo(models.Model):
 
     image = models.ImageField(upload_to='photos/')
 
-    submitter = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    submitter = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_query_name="submitter")
 
     share = models.ManyToManyField(get_user_model(), related_name='shared_users', blank=True)
 
