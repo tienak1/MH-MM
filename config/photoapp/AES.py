@@ -160,7 +160,13 @@ class AESCipher:
             c = self.Encrypt(lists[i])
             for j in range(img.size[1]):
                 pixels[i,j] = (c[j*3], c[j*3+1], c[j*3+2])
-        return new_img
+        # new_img.putdata(pixels) 
+        img_file.seek(0)
+        new_img.save(img_file)
+        img_file.seek(0)
+
+        # return new_img
+
 
     def img_decrypt(self, img_file): #giai ma anh
         img = Image.open(img_file)
@@ -185,11 +191,11 @@ class AESCipher:
                 pixels[i,j] = (m[j*3], m[j*3+1], m[j*3+2])
         return new_img
 
-key, L, U = Matrix.Generate_IMatrix(20)
-Ikey = Matrix.Find_IMatrix(L, U)
+# key, L, U = Matrix.Generate_IMatrix(20)
+# Ikey = Matrix.Find_IMatrix(L, U)
 
-AES = AESCipher(key, Ikey)
-en_img = AES.img_encrypt('RSA.jpg')
-en_img.show()
-de_img = AES.img_decrypt('decrypt.png')
-de_img.show()
+# AES = AESCipher(key, Ikey)
+# en_img = AES.img_encrypt('RSA.jpg')
+# en_img.show()
+# de_img = AES.img_decrypt('decrypt.png')
+# de_img.show()

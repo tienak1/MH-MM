@@ -12,8 +12,8 @@ from django.urls import reverse_lazy
 from .models import Photo
 from .forms import ShareForm
 
-from .AES_cipher import AESCipher
-
+# from .AES_cipher import AESCipher
+from .AES import AESCipher, Matrix
 from django.contrib.auth.models import User
 
 class PhotoListView(ListView):
@@ -64,9 +64,10 @@ class PhotoCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.submitter = self.request.user
 
-        key = 'y6lLepZQpppdzjkeG5MhUaaaRCychpDd'
-        cipher = AESCipher(key)
-        cipher.encrypt(self.request.FILES['image'])
+        key, L, U = Matrix.Generate_IMatrix(20)
+        Ikey =  Matrix.Find_IMatrix(L, U)
+        cipher = AESCipher(key, Ikey)
+        cipher.img_encrypt(self.request.FILES['image'])
 
         form.save()
         return super().form_valid(form)
