@@ -94,16 +94,50 @@ class Matrix:
 
         return X
 
+    @staticmethod
+    def matrix2string(key):
+        Ikeystring=""
+        for i in key:
+            row=""
+            for j in i:
+                row+=str(j)
+                row+=";"
+            Ikeystring+=row
+        return(Ikeystring[:-1])
+
+    @staticmethod
+    def string2matrix(string):
+        Ikeymatrix=[]
+        row=[]
+        index=""
+        string.replace('[|]', '')
+        for i in range(len(string)):
+            if string[i]==";":
+                row.append(int(index))
+                index=""
+            else:
+                index+=string[i]
+            if len(row)==20:
+                Ikeymatrix.append(row)
+                row=[]
+            if i==len(string)-1:
+                row.append(int(string[i]))
+                Ikeymatrix.append(row)
+                break
+        return Ikeymatrix
+
+
 
 class AESCipher:
 
-    def __init__(self, key, Ikey):
-        self.key = key
-        self.Ikey = Ikey
+    def __init__(self):
+        pass
+        # self.key = key
+        # self.Ikey = Ikey
         
-    def Encrypt(self, m): #ma hoa 1 mang
+    def Encrypt(self, m, key): #ma hoa 1 mang
         C = []
-        size = len(self.key)
+        size = len(key)
 
         temp = len(m) % size
         if temp != 0:
@@ -115,14 +149,14 @@ class AESCipher:
             for j in range(0, size):
                 temp = 0
                 for k in range(0, size):
-                    temp += self.key[j][k] * m[i + k]
+                    temp += key[j][k] * m[i + k]
                 C.append(temp % 256)
             i += size
         return C
 
-    def Decrypt(self, c): #giai ma 1 mang
+    def Decrypt(self, c, Ikey): #giai ma 1 mang
         M = []
-        size = len(self.Ikey)
+        size = len(Ikey)
         
         temp = len(c) % size
         if temp != 0:
@@ -134,12 +168,12 @@ class AESCipher:
             for j in range(0, size):
                 temp = 0
                 for k in range(0, size):
-                    temp += self.Ikey[j][k] * c[i + k]
+                    temp += Ikey[j][k] * c[i + k]
                 M.append(temp % 256)
             i += size
         return M
 
-    def img_encrypt(self, img_file): #ma hoa anh
+    def img_encrypt(self, img_file, key): #ma hoa anh
         img = Image.open(img_file)
         pixels = img.load()
 
@@ -157,7 +191,7 @@ class AESCipher:
         pixels = new_img.load()
 
         for i in range(img.size[0]): #ma hoa
-            c = self.Encrypt(lists[i])
+            c = self.Encrypt(lists[i], key)
             for j in range(img.size[1]):
                 pixels[i,j] = (c[j*3], c[j*3+1], c[j*3+2])
         # new_img.putdata(pixels) 
@@ -168,7 +202,7 @@ class AESCipher:
         # return new_img
 
 
-    def img_decrypt(self, img_file): #giai ma anh
+    def img_decrypt(self, img_file, Ikey): #giai ma anh
         img = Image.open(img_file)
         pixels = img.load()
         
@@ -186,7 +220,7 @@ class AESCipher:
         pixels = new_img.load()
         
         for i in range(img.size[0]): #giai ma
-            m = self.Decrypt(lists[i])
+            m = self.Decrypt(lists[i], Ikey)
             for j in range(img.size[1]):
                 pixels[i,j] = (m[j*3], m[j*3+1], m[j*3+2])
         return new_img

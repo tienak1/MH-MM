@@ -3,6 +3,7 @@
 from django.urls import path
 
 from .views import (
+    ImgThumbnail,
     PhotoListView,
     PhotoTagListView,
     PhotoDetailView,
@@ -27,5 +28,7 @@ urlpatterns = [
 
     path('photo/<int:pk>/delete/', PhotoDeleteView.as_view(), name='delete'),
 
-    path('photo/<int:pk>/share/', PhotoShareView.as_view(), name='share')
+    path('photo/<int:pk>/share/', PhotoShareView.as_view(), name='share'),
+
+    path('photo/<int:pk>/view/', ImgThumbnail.as_view(), name='view'),
 ]
