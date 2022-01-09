@@ -149,9 +149,6 @@ class AESCipher:
                 b = pixels[i,j][1]
                 g = pixels[i,j][2]
                 lists += [r, b, g]
-#        print(lists)
-        new_img = Image.new(img.mode, img.size) #tao anh moi
-        pixels = new_img.load()
         
         c = self.Encrypt(lists)
         count = 0
@@ -161,7 +158,7 @@ class AESCipher:
                 count += 1
                 
         img_file.seek(0)
-        new_img.save(img_file)
+        img.save(img_file, 'PNG')
         img_file.seek(0)
         
 #        return new_img
@@ -179,9 +176,6 @@ class AESCipher:
                 g = pixels[i,j][2]
                 lists += [r, b, g]
         
-        new_img = Image.new(img.mode, img.size) #tao anh moi
-        pixels = new_img.load()
-        
         m = self.Decrypt(lists)
         count = 0
         for i in range(img.size[0]): #giai ma
@@ -190,7 +184,7 @@ class AESCipher:
                 count += 1
                 
         img_file.seek(0)
-        new_img.save(img_file)
+        img.save(img_file)
         img_file.seek(0)
 #        return new_img
 
