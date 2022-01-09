@@ -130,20 +130,12 @@ class Matrix:
 
 class AESCipher:
 
-<<<<<<< HEAD
-    def __init__(self, key, Ikey):
-        self.key = key
-        self.Ikey = Ikey
-
-    def Encrypt(self, m): #ma hoa 1 mang
-=======
     def __init__(self):
         pass
         # self.key = key
         # self.Ikey = Ikey
         
     def Encrypt(self, m, key): #ma hoa 1 mang
->>>>>>> testAES
         C = []
         size = len(key)
 
@@ -163,18 +155,8 @@ class AESCipher:
 
     def Decrypt(self, c, Ikey): #giai ma 1 mang
         M = []
-<<<<<<< HEAD
-        size = len(self.Ikey)
-
-=======
         size = len(Ikey)
-        
-        temp = len(c) % size
-        if temp != 0:
-            for i in range(temp, size): #them so 0 vao sau cung
-                c.append(0)
-        
->>>>>>> testAES
+
         i = 0
         while (i < len(c)):
             if i + size > len(c):
@@ -202,13 +184,9 @@ class AESCipher:
                 g = pixels[i,j][2]
                 lists += [r, b, g]
         
-        c = self.Encrypt(lists)
+        c = self.Encrypt(lists, key)
         count = 0
         for i in range(img.size[0]): #ma hoa
-<<<<<<< HEAD
-=======
-            c = self.Encrypt(lists[i], key)
->>>>>>> testAES
             for j in range(img.size[1]):
                 pixels[i,j] = (c[count*3], c[count*3+1], c[count*3+2])
                 count += 1
@@ -216,8 +194,6 @@ class AESCipher:
         img_file.seek(0)
         img.save(img_file, 'PNG')
         img_file.seek(0)
-        
-#        return new_img
 
     def img_decrypt(self, img_file, Ikey): #giai ma anh
         img = Image.open(img_file)
@@ -225,36 +201,28 @@ class AESCipher:
 
         lists = [] #chuyen doi pixel tung dong thanh r,b,g
         for i in range(img.size[0]):
-            elem = []
             for j in range(img.size[1]):
                 r = pixels[i,j][0]
                 b = pixels[i,j][1]
                 g = pixels[i,j][2]
                 lists += [r, b, g]
         
-        m = self.Decrypt(lists)
+        m = self.Decrypt(lists, Ikey)
         count = 0
         for i in range(img.size[0]): #giai ma
-<<<<<<< HEAD
-=======
-            m = self.Decrypt(lists[i], Ikey)
->>>>>>> testAES
             for j in range(img.size[1]):
                 pixels[i,j] = (m[count*3], m[count*3+1], m[count*3+2])
                 count += 1
                 
-        img_file.seek(0)
-        img.save(img_file)
-        img_file.seek(0)
-#        return new_img
+        return img
 
 
 
 # key, L, U = Matrix.Generate_IMatrix(20)
 # Ikey = Matrix.Find_IMatrix(L, U)
 
-# AES = AESCipher(key, Ikey)
-# en_img = AES.img_encrypt('images copy.jpeg')
-# #en_img.show()
-# de_img = AES.img_decrypt('images copy.jpeg')
-# #de_img.show()
+# AES = AESCipher()
+# en_img = AES.img_encrypt("C:/Users/thatt/source/MH-MM/config/photoapp/cau1B(1).jpg", key)
+# en_img.show()
+# de_img = AES.img_decrypt("C:/Users/thatt/source/MH-MM/config/photoapp/cau1B(1).jpg", Ikey)
+# de_img.show()

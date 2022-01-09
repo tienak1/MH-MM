@@ -75,7 +75,7 @@ class PhotoDetailView(DetailView):
     template_name = 'photoapp/detail.html'
 
     context_object_name = 'photo'
-
+    
 
 class PhotoCreateView(LoginRequiredMixin, CreateView):
 
