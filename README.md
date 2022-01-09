@@ -62,6 +62,14 @@ Run the project.
 python manage.py runserver
 ```
 
+After make change in model:
+```bash
+python manage.py makemigrations
+```
+```bash
+python manage.py migrate
+```
+
 Visit <http://localhost:8000/>.
 
 ![Main Page](https://uploads.sitepoint.com/wp-content/uploads/2021/05/1622404676list.png)
