@@ -16,3 +16,4 @@ toml==0.10.2
 wrapt==1.12.1
 pycrytodome
 pycrytodomex
+django-matrix-field

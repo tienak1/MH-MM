@@ -6,6 +6,8 @@ from django.contrib.auth import get_user_model
 
 from taggit.managers import TaggableManager
 
+from django.core.validators import int_list_validator
+
 class Photo(models.Model):
     
     title = models.CharField(max_length=45)
@@ -20,6 +22,8 @@ class Photo(models.Model):
 
     share = models.ManyToManyField(get_user_model(), related_name='shared_users', blank=True)
 
+    key = models.TextField()
+    
     tags = TaggableManager() 
 
     def __str__(self):

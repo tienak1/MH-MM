@@ -94,16 +94,58 @@ class Matrix:
 
         return X
 
+    @staticmethod
+    def matrix2string(key):
+        Ikeystring=""
+        for i in key:
+            row=""
+            for j in i:
+                row+=str(j)
+                row+=";"
+            Ikeystring+=row
+        return(Ikeystring[:-1])
+
+    @staticmethod
+    def string2matrix(string):
+        Ikeymatrix=[]
+        row=[]
+        index=""
+        string.replace('[|]', '')
+        for i in range(len(string)):
+            if string[i]==";":
+                row.append(int(index))
+                index=""
+            else:
+                index+=string[i]
+            if len(row)==20:
+                Ikeymatrix.append(row)
+                row=[]
+            if i==len(string)-1:
+                row.append(int(string[i]))
+                Ikeymatrix.append(row)
+                break
+        return Ikeymatrix
+
+
 
 class AESCipher:
 
+<<<<<<< HEAD
     def __init__(self, key, Ikey):
         self.key = key
         self.Ikey = Ikey
 
     def Encrypt(self, m): #ma hoa 1 mang
+=======
+    def __init__(self):
+        pass
+        # self.key = key
+        # self.Ikey = Ikey
+        
+    def Encrypt(self, m, key): #ma hoa 1 mang
+>>>>>>> testAES
         C = []
-        size = len(self.key)
+        size = len(key)
 
         i = 0
         while (i < len(m)): #vong lap ma hoa list, ma hoa tung cum size phan tu
@@ -114,15 +156,25 @@ class AESCipher:
             for j in range(0, size):
                 temp = 0
                 for k in range(0, size):
-                    temp += self.key[j][k] * m[i + k]
+                    temp += key[j][k] * m[i + k]
                 C.append(temp % 256)
             i += size
         return C
 
-    def Decrypt(self, c): #giai ma 1 mang
+    def Decrypt(self, c, Ikey): #giai ma 1 mang
         M = []
+<<<<<<< HEAD
         size = len(self.Ikey)
 
+=======
+        size = len(Ikey)
+        
+        temp = len(c) % size
+        if temp != 0:
+            for i in range(temp, size): #them so 0 vao sau cung
+                c.append(0)
+        
+>>>>>>> testAES
         i = 0
         while (i < len(c)):
             if i + size > len(c):
@@ -133,12 +185,12 @@ class AESCipher:
             for j in range(0, size):
                 temp = 0
                 for k in range(0, size):
-                    temp += self.Ikey[j][k] * c[i + k]
+                    temp += Ikey[j][k] * c[i + k]
                 M.append(temp % 256)
             i += size
         return M
 
-    def img_encrypt(self, img_file): #ma hoa anh
+    def img_encrypt(self, img_file, key): #ma hoa anh
         img = Image.open(img_file)
         pixels = img.load()
 
@@ -153,6 +205,10 @@ class AESCipher:
         c = self.Encrypt(lists)
         count = 0
         for i in range(img.size[0]): #ma hoa
+<<<<<<< HEAD
+=======
+            c = self.Encrypt(lists[i], key)
+>>>>>>> testAES
             for j in range(img.size[1]):
                 pixels[i,j] = (c[count*3], c[count*3+1], c[count*3+2])
                 count += 1
@@ -163,7 +219,7 @@ class AESCipher:
         
 #        return new_img
 
-    def img_decrypt(self, img_file): #giai ma anh
+    def img_decrypt(self, img_file, Ikey): #giai ma anh
         img = Image.open(img_file)
         pixels = img.load()
 
@@ -179,6 +235,10 @@ class AESCipher:
         m = self.Decrypt(lists)
         count = 0
         for i in range(img.size[0]): #giai ma
+<<<<<<< HEAD
+=======
+            m = self.Decrypt(lists[i], Ikey)
+>>>>>>> testAES
             for j in range(img.size[1]):
                 pixels[i,j] = (m[count*3], m[count*3+1], m[count*3+2])
                 count += 1
