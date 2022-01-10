@@ -11,13 +11,14 @@ from django.urls import reverse_lazy
 
 from .models import Photo
 from .forms import ShareForm
-from PIL import Image
-from django.conf import settings
+
 # from .AES_cipher import AESCipher
 from .AES import AESCipher, Matrix
 # from django.contrib.auth.models import User
 
-from django.http import HttpResponse
+import base64
+from PIL import Image 
+import io
 
 
 # class PhotoDecrypt():
@@ -162,27 +163,3 @@ class PhotoShareView(UserIsSubmitter, UpdateView):
     form_class = ShareForm
 
     success_url = reverse_lazy('photo:list')
-
-import base64
-from PIL import Image 
-import io
-class ImgThumbnail(PhotoDetailView):
-
-    template_name = 'photoapp/detail.html'
-
-    def get_photo(self):
-        return get_object_or_404(Photo, pk=self.kwargs.get('pk'))
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        Ikey = Matrix.string2matrix(self.get_photo().key)
-        cipher = AESCipher()
-        img_data = cipher.img_decrypt(self.get_photo().image.path, Ikey)
-        #img_data = Image.open(self.get_photo().image.path)
-        data = io.BytesIO()
-        img_data.save(data, "PNG")
-        encoded_img = base64.b64encode(data.getvalue())
-        decoded_img = encoded_img.decode('utf-8')
-        img = f"data:image/jpeg;base64,{decoded_img}"
-        context["dec_img"] = img
-        return context
