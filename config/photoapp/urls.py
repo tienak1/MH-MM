@@ -30,5 +30,4 @@ urlpatterns = [
 
     path('photo/<int:pk>/share/', PhotoShareView.as_view(), name='share'),
 
-    path('photo/<int:pk>/view/', ImgThumbnail.as_view(), name='view'),
 ]

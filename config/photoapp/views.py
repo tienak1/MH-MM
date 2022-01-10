@@ -76,6 +76,27 @@ class PhotoDetailView(DetailView):
 
     context_object_name = 'photo'
     
+    def get_photo(self):
+        return get_object_or_404(Photo, pk=self.kwargs.get('pk'))
+
+    def get_context_data(self, **kwargs):
+        context = super(PhotoDetailView, self).get_context_data(**kwargs)
+        photo = self.get_photo()
+        Ikey = Matrix.string2matrix(photo.key)
+        cipher = AESCipher()
+        img_data = cipher.img_decrypt(photo.image.path, Ikey)
+        #img_data = Image.open(self.get_photo().image.path)
+        data = io.BytesIO()
+        img_data.save(data, "PNG")
+        print(data)
+        encoded_img = base64.b64encode(data.getvalue())
+        decoded_img = encoded_img.decode('utf-8')
+        # print(decoded_img)
+        #img = f"data:image/jpeg;base64,{decoded_img}"
+        context["dec_img"] = data
+        return context
+
+
 
 class PhotoCreateView(LoginRequiredMixin, CreateView):
 
@@ -149,8 +170,6 @@ class ImgThumbnail(PhotoDetailView):
 
     template_name = 'photoapp/detail.html'
 
-    # def get_photo(self):
-    #     return get_object_or_404(Photo, pk=self.kwargs.get('pk'))
     def get_photo(self):
         return get_object_or_404(Photo, pk=self.kwargs.get('pk'))
 
@@ -158,10 +177,10 @@ class ImgThumbnail(PhotoDetailView):
         context = super().get_context_data(**kwargs)
         Ikey = Matrix.string2matrix(self.get_photo().key)
         cipher = AESCipher()
-        #img_data = cipher.img_decrypt(self.get_photo().image.path, Ikey)
-        img_data = Image.open("D:\BaiTap\MATMA\DA1\MH-MM\config\photoapp\ktlt.jpg")
+        img_data = cipher.img_decrypt(self.get_photo().image.path, Ikey)
+        #img_data = Image.open(self.get_photo().image.path)
         data = io.BytesIO()
-        img_data.save(data, "JPEG")
+        img_data.save(data, "PNG")
         encoded_img = base64.b64encode(data.getvalue())
         decoded_img = encoded_img.decode('utf-8')
         img = f"data:image/jpeg;base64,{decoded_img}"
