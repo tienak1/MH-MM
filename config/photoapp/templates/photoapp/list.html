@@ -2,15 +2,24 @@
 
 {% block body %}
 <div class="row">
+  <div class="card-deck">
   {% for photo in photos %}
     {% if photo.submitter == user %}
-      <div class="col-lg-3 col-md-4 col-xs-6">
+      <!-- <div class="col-lg-3 col-md-4 col-xs-6">
         <a href="{% url 'photo:detail' photo.id %}" class="d-block mb-4 h-100">
           <img src="{{photo.image.url}}" class="img-fluid rounded" alt="{{photo.title}}" />
         </a>
+      </div> -->
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <a href="{% url 'photo:detail' photo.id %}" class="d-block mb-4 h-100">
+            <h2 style="text-align: center;" class="card-title" data-toggle="tooltip" title="View detail">{{photo.title}}</h2>
+          </a>
+        </div>
       </div>
     {% endif %}
   {% endfor %}
+  </div>
 </div>
 
 {% endblock body %}

@@ -30,9 +30,6 @@ class PhotoListView(ListView):
     model = Photo
 
     template_name = 'photoapp/list.html'
-
-    def decrypt(self):
-        img = Image.open(Photo.image.url)
         
     context_object_name = 'photos'
 
@@ -158,12 +155,13 @@ class ImgThumbnail(PhotoDetailView):
         context = super().get_context_data(**kwargs)
         Ikey = Matrix.string2matrix(self.get_photo().key)
         cipher = AESCipher()
-        #img_data = cipher.img_decrypt(self.get_photo().image.path, Ikey)
-        img_data = Image.open("D:\BaiTap\MATMA\DA1\MH-MM\config\photoapp\ktlt.jpg")
+        img_data = cipher.img_decrypt(self.get_photo().image.path, Ikey)
+        #img_data = Image.open("D:\BaiTap\MATMA\DA1\MH-MM\config\photoapp\ktlt.jpg")
         data = io.BytesIO()
-        img_data.save(data, "JPEG")
+        img_data.save(data,"jpeg")
         encoded_img = base64.b64encode(data.getvalue())
         decoded_img = encoded_img.decode('utf-8')
         img = f"data:image/jpeg;base64,{decoded_img}"
         context["dec_img"] = img
         return context
+
