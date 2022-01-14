@@ -9,7 +9,7 @@ class UserKey(models.Model):
     #other fields here
     E = models.BigIntegerField(null=True)
     N = models.BigIntegerField(null=True)
-    D = models.BigIntegerField(null=True)
+    D = models.TextField(null=True)
     def __str__(self):  
           return self.D
 
