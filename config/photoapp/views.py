@@ -108,7 +108,7 @@ class PhotoCreateView(LoginRequiredMixin, CreateView):
 
     template_name = 'photoapp/create.html'
     
-    success_url = reverse_lazy('photo:list')   
+    success_url = reverse_lazy('photo:myList')   
     
     def form_valid(self, form):
         form.instance.submitter = self.request.user
@@ -145,7 +145,7 @@ class PhotoUpdateView(UserIsSubmitter, UpdateView):
 
     fields = ['title', 'description', 'tags']
     
-    success_url = reverse_lazy('photo:list')
+    success_url = reverse_lazy('photo:myList')
 
 class PhotoDeleteView(UserIsSubmitter, DeleteView):
     
@@ -153,7 +153,7 @@ class PhotoDeleteView(UserIsSubmitter, DeleteView):
 
     model = Photo
 
-    success_url = reverse_lazy('photo:list')
+    success_url = reverse_lazy('photo:myList')
 
 class PhotoShareView(UserIsSubmitter, UpdateView):
     
@@ -163,4 +163,4 @@ class PhotoShareView(UserIsSubmitter, UpdateView):
 
     form_class = ShareForm
 
-    success_url = reverse_lazy('photo:list')
+    success_url = reverse_lazy('photo:myList')

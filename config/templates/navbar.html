@@ -25,7 +25,11 @@
         </li>
         
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'photo:decryptedList' %}">Decryt</a>
+          <a class="nav-link active" href="{% url 'photo:decryptedList' %}">Decrypt All</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link active" href="" onclick="DownloadAll();">Download All</a>
         </li>
 
         <li class="nav-item">
@@ -37,11 +41,19 @@
         </li>
         {% else %}
         <li class="nav-item">
-          <a href="{% url 'user:login' %}" class="btn btn-sm btn-danger"
-            >Sign In</a>
+          <h3 style="color: white;">Photo App</h3>
         </li>
         {% endif %}
       </ul>
     </div>
   </div>
 </nav>
+
+<script>
+  function DownloadAll(){
+    const images=document.getElementsByName('image');
+    for (let i of images){
+      i.click();
+    }
+  }
+</script>
