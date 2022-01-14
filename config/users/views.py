@@ -19,7 +19,7 @@ class SignUpView(CreateView):
 
     model = UserKey
 
-    success_url = reverse_lazy('photo:list')
+    success_url = reverse_lazy('photo:myList')
 
     def form_valid(self, form):
         E, D, N = CreateKey()
