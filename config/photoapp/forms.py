@@ -14,3 +14,6 @@ class ShareForm(forms.ModelForm):
     class Meta:
         model = Photo
         fields = ['share']
+
+class privateKeyForm(forms.Form):
+    key = forms.IntegerField(required=True)

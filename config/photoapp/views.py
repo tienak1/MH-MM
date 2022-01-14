@@ -13,6 +13,10 @@ from .models import Photo
 from .forms import ShareForm
 from cipher.AES import AESCipher, Matrix, DecryptImg
 from cipher.RSA import RSA
+from .forms import privateKeyForm
+
+from django.shortcuts import render
+
 
 class PhotoListView(ListView):
     
@@ -154,3 +158,8 @@ class PhotoShareView(UserIsSubmitter, UpdateView):
     form_class = ShareForm
 
     success_url = reverse_lazy('photo:myList')
+
+def privateKey(request):
+    context = {}
+    context['form'] = privateKeyForm()
+    return render( request, "photoapp/privateKey.html", context)

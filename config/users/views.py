@@ -42,5 +42,4 @@ class SignUpView(CreateView):
         return to_return
     
 class CustomLoginView(LoginView):
-    
     template_name = 'users/login.html'
