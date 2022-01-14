@@ -9,6 +9,7 @@
         <a href="{% url 'photo:detail' photo.id %}" class="d-block mb-4 h-100">
           <img src="{{photo.img}}" class="img-fluid rounded" alt="{{photo.title}}" />
         </a>
+        <p>shared by: {{photo.submitter}}</p>
       </div>
   {% endfor %}
   </div>

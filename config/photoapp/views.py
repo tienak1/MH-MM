@@ -27,10 +27,10 @@ class PhotoListView(ListView):
 
     template_name = 'photoapp/list.html'
 
-    def get_queryset(self):
-        return self.model.objects.filter(submitter=self.request.user)
-        
     context_object_name = 'photos'
+
+    # def get_queryset(self):
+    #     return Photo.all()
 
     def get_context_data(self, **kwargs):
         context = super(PhotoListView, self).get_context_data(**kwargs)
@@ -38,20 +38,19 @@ class PhotoListView(ListView):
             photo.img = photo.image.url
         return context
 
-
 class MyPhotoListView(PhotoListView):
-    
-    template_name = 'photoapp/myList.html'
-
     def get_queryset(self):
         return self.model.objects.filter(submitter=self.request.user)
-
+        
 class SharedWithMePhotoListView(PhotoListView):
     
-    template_name = 'photoapp/sharedList.html'
+    # template_name = 'photoapp/list.html'
+
+    # model = Photo
 
     def get_queryset(self):
-        return self.model.objects.filter(shared=self.request.user)
+        return self.model.objects.filter(share__username=self.request.user)
+
 
 class PhotoTagListView(PhotoListView):
     
@@ -70,7 +69,7 @@ class PhotoTagListView(PhotoListView):
         return context
      
 
-class DecryptionView(PhotoListView):
+class DecryptionView(MyPhotoListView):
 
     template_name = 'photoapp/list.html'
 
@@ -96,17 +95,7 @@ class PhotoDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PhotoDetailView, self).get_context_data(**kwargs)
         photo = self.get_photo()
-        # Ikey = Matrix.string2matrix(photo.key)
-        # cipher = AESCipher()
-        # img_data = cipher.img_decrypt(photo.image.path, Ikey)
-        # #img_data = Image.open(self.get_photo().image.path)
-        # data = io.BytesIO()
-        # img_data.save(data, "PNG")
-        # encoded_img = base64.b64encode(data.getvalue())
-        # decoded_img = encoded_img.decode('utf-8')
         decoded_img = DecryptImg(photo)
-        # print(decoded_img)
-        #img = f"data:image/jpeg;base64,{decoded_img}"
         context["dec_img"] = decoded_img
         return context
 

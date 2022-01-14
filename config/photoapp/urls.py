@@ -10,13 +10,17 @@ from .views import (
     PhotoUpdateView,
     PhotoDeleteView,
     PhotoShareView,
-    DecryptionView
+    DecryptionView,
+    SharedWithMePhotoListView,
+    MyPhotoListView
 )
 
 app_name = 'photo'
 
 urlpatterns = [
     path('', PhotoListView.as_view(), name='list'),
+
+    path('photo', MyPhotoListView.as_view(), name='myList'),
 
     path('tag/<slug:tag>/', PhotoTagListView.as_view(), name='tag'),
 
@@ -31,4 +35,6 @@ urlpatterns = [
     path('photo/<int:pk>/share/', PhotoShareView.as_view(), name='share'),
 
     path('decrypt', DecryptionView.as_view(), name='decryptedList'),
+
+    path('shared', SharedWithMePhotoListView.as_view(), name='sharedList'),
 ]

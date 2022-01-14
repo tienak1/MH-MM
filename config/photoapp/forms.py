@@ -8,13 +8,9 @@ class UserModelChoiceField(forms.ModelMultipleChoiceField):
         return "%s - %s" % (obj.id,obj.username)
 
 class ShareForm(forms.ModelForm):
-    share = UserModelChoiceField(queryset=get_user_model().objects.all().select_related('submitter').defer('submitter__submitter'),\
+    share = UserModelChoiceField(queryset=get_user_model().objects.all().defer('submitter').prefetch_related('shared_users'),\
         widget = forms.CheckboxSelectMultiple(), required = False)
-    # def __init__(self, *args, **kwargs):
-    #     super(ShareForm, self).__init__(*args, **kwargs)
-    #     self.fields['photo'] = kwargs.pop('photo')
-    #     self.fields['user'] = forms.ModelChoiceField(label="User", choices=[(x.plug_ip, x.id) for x in get_user_model().objects.all()])
-    
+
     class Meta:
         model = Photo
         fields = ['share']
