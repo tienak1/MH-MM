@@ -138,7 +138,7 @@ class RSA:
         self.D = d
         self.N = n
 
-    def encrypt(self, m):
+    def encrypt(self, m, E, N):
         c = []
         for i in m:
             elem = []
@@ -146,7 +146,7 @@ class RSA:
                 elem.append(Module.Powermod(j, E, N))
             c.append(elem)
         return c
-    def decrypt(self,c):
+    def decrypt(self,c, D, N):
         m = []
         for i in c:
             elem = []
@@ -155,26 +155,29 @@ class RSA:
             m.append(elem)
         return m
 
-P = PrimeGen(10)
+def CreateKey():
+    P = PrimeGen(10)
 
-Q = PrimeGen(10)
+    Q = PrimeGen(10)
 
-N = P*Q
+    N = P*Q
 
-eulerTotient = (P - 1) * (Q - 1)
+    eulerTotient = (P - 1) * (Q - 1)
 
-E = PrimeGen(4)
-while gcd(E, eulerTotient) != 1:
     E = PrimeGen(4)
+    while gcd(E, eulerTotient) != 1:
+        E = PrimeGen(4)
 
-D = gcd_extends(E, eulerTotient)
+    D = gcd_extends(E, eulerTotient)
+    return E, D, N
 
-i = RSA(E, D, N)
 
-m = [[0, 2, 3], [2, 3, 1], [7, 6, 2]]
+# i = RSA(E, D, N)
 
-c = i.encrypt(m)
-print(c)
+# m = [[0, 2, 3], [2, 3, 1], [7, 6, 2]]
 
-m1 = i.decrypt(c)
-print(m1)
+# c = i.encrypt(m)
+# print(c)
+
+# m1 = i.decrypt(c)
+# print(m1)

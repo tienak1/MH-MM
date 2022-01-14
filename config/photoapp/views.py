@@ -11,14 +11,7 @@ from django.urls import reverse_lazy
 
 from .models import Photo
 from .forms import ShareForm
-
-# from .AES_cipher import AESCipher
-from .AES import AESCipher, Matrix, DecryptImg
-# from django.contrib.auth.models import User
-
-import base64
-from PIL import Image 
-import io
+from cypher.AES import AESCipher, Matrix, DecryptImg
 
 
 class PhotoListView(ListView):
@@ -28,9 +21,6 @@ class PhotoListView(ListView):
     template_name = 'photoapp/list.html'
 
     context_object_name = 'photos'
-
-    # def get_queryset(self):
-    #     return Photo.all()
 
     def get_context_data(self, **kwargs):
         context = super(PhotoListView, self).get_context_data(**kwargs)
@@ -43,10 +33,6 @@ class MyPhotoListView(PhotoListView):
         return self.model.objects.filter(submitter=self.request.user)
         
 class SharedWithMePhotoListView(PhotoListView):
-    
-    # template_name = 'photoapp/list.html'
-
-    # model = Photo
 
     def get_queryset(self):
         return self.model.objects.filter(share__username=self.request.user)
@@ -116,7 +102,9 @@ class PhotoCreateView(LoginRequiredMixin, CreateView):
         key, L, U = Matrix.Generate_IMatrix(20)
         # global Ikey, cipher
         Ikey =  Matrix.Find_IMatrix(L, U)
+        
         Ikey = Matrix.matrix2string(Ikey)
+
         form.instance.key = Ikey
         cipher = AESCipher()
         cipher.img_encrypt(self.request.FILES['image'], key)
