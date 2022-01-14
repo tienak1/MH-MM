@@ -2,6 +2,7 @@ import random
 from PIL import Image
 import base64
 import io
+from cipher.RSA import RSA
 
 class Matrix:
     @staticmethod
@@ -221,6 +222,10 @@ class AESCipher:
 
 def DecryptImg(photo):
     Ikey = Matrix.string2matrix(photo.key)
+    N = photo.submitter.userkey.N
+    D = photo.submitter.userkey.D
+    RSA_cipher = RSA()
+    Ikey = RSA_cipher.decrypt(Ikey, D, N)
     cipher = AESCipher()
     img_data = cipher.img_decrypt(photo.image.path, Ikey)
     #img_data = Image.open(self.get_photo().image.path)

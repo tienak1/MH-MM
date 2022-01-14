@@ -11,8 +11,8 @@ from django.urls import reverse_lazy
 
 from .models import Photo
 from .forms import ShareForm
-from cypher.AES import AESCipher, Matrix, DecryptImg
-
+from cipher.AES import AESCipher, Matrix, DecryptImg
+from cipher.RSA import RSA
 
 class PhotoListView(ListView):
     
@@ -98,11 +98,13 @@ class PhotoCreateView(LoginRequiredMixin, CreateView):
     
     def form_valid(self, form):
         form.instance.submitter = self.request.user
-
+        E = self.request.user.userkey.E
+        N = self.request.user.userkey.N
         key, L, U = Matrix.Generate_IMatrix(20)
         # global Ikey, cipher
         Ikey =  Matrix.Find_IMatrix(L, U)
-        
+        RSA_cipher = RSA()
+        Ikey = RSA_cipher.encrypt(Ikey, E, N)
         Ikey = Matrix.matrix2string(Ikey)
 
         form.instance.key = Ikey

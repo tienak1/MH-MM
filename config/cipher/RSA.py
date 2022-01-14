@@ -56,9 +56,9 @@ class Prime:
     def miillerTest(d, n): # miller robbin
 
         a = random.randrange(2, n - 1)
-        x = Module.Powermod(a, d, n);
+        x = Module.Powermod(a, d, n)
         if x == 1  or x == n-1:
-           return True;
+           return True
 
         while (d != n-1):
             x = Module.Mulmod(x, x, n)
@@ -83,10 +83,7 @@ class Prime:
             d >>= 1
         if not(Prime.PrimeTestF(n)):
             return False
-    #    for i in range(0, k):
-    #         if not(miillerTest(n, d)):
-    #              return False
-
+            
         return True
 
 
@@ -133,10 +130,8 @@ def gcd_extends(e, phi):
         return d + phi
 
 class RSA:
-    def __init__(self, e, d, n):
-        self.E = e
-        self.D = d
-        self.N = n
+    def __init__(self):
+        pass
 
     def encrypt(self, m, E, N):
         c = []

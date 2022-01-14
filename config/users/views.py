@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.urls import reverse_lazy
 
-from cypher.RSA import CreateKey
+from cipher.RSA import CreateKey
 
 from .models import UserKey
 class SignUpView(CreateView):
@@ -23,9 +23,6 @@ class SignUpView(CreateView):
 
     def form_valid(self, form):
         E, D, N = CreateKey()
-        # form.instance.E = E
-        # form.instance.N = N
-        # form.instance.D = hashD
         user = form.save()
         user.refresh_from_db() 
         hashD = hash(D)
