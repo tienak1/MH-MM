@@ -1,5 +1,7 @@
 import random
 from PIL import Image
+import base64
+import io
 
 class Matrix:
     @staticmethod
@@ -217,12 +219,13 @@ class AESCipher:
         return img
 
 
-
-# key, L, U = Matrix.Generate_IMatrix(20)
-# Ikey = Matrix.Find_IMatrix(L, U)
-
-# AES = AESCipher()
-# en_img = AES.img_encrypt("C:/Users/thatt/source/MH-MM/config/photoapp/cau1B(1).jpg", key)
-# en_img.show()
-# de_img = AES.img_decrypt("C:/Users/thatt/source/MH-MM/config/photoapp/cau1B(1).jpg", Ikey)
-# de_img.show()
+def DecryptImg(photo):
+    Ikey = Matrix.string2matrix(photo.key)
+    cipher = AESCipher()
+    img_data = cipher.img_decrypt(photo.image.path, Ikey)
+    #img_data = Image.open(self.get_photo().image.path)
+    data = io.BytesIO()
+    img_data.save(data, "PNG")
+    encoded_img = base64.b64encode(data.getvalue())
+    decoded_img = encoded_img.decode('utf-8')
+    return decoded_img

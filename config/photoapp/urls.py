@@ -9,7 +9,8 @@ from .views import (
     PhotoCreateView,
     PhotoUpdateView,
     PhotoDeleteView,
-    PhotoShareView
+    PhotoShareView,
+    DecryptionView
 )
 
 app_name = 'photo'
@@ -29,4 +30,5 @@ urlpatterns = [
 
     path('photo/<int:pk>/share/', PhotoShareView.as_view(), name='share'),
 
+    path('decrypt', DecryptionView.as_view(), name='decryptedList'),
 ]
