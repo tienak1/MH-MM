@@ -1,4 +1,5 @@
 import random
+import hashlib
 
 class Module:
     @staticmethod
@@ -83,7 +84,7 @@ class Prime:
             d >>= 1
         if not(Prime.PrimeTestF(n)):
             return False
-            
+
         return True
 
 
@@ -166,7 +167,11 @@ def CreateKey():
     D = gcd_extends(E, eulerTotient)
     return E, D, N
 
-
+def checkHash(x, hash):
+    x = x + 50
+    if hashlib.md5(bytes(x)).hexdigest() == hash:
+        return True
+    return False
 # i = RSA(E, D, N)
 
 # m = [[0, 2, 3], [2, 3, 1], [7, 6, 2]]

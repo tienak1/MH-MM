@@ -1,18 +1,19 @@
 '''Photo app generic views'''
+from urllib import request
 from django.shortcuts import get_object_or_404
 
 from django.core.exceptions import PermissionDenied
 
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView, RedirectView
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from .models import Photo
 from .forms import ShareForm
 from cipher.AES import AESCipher, Matrix, DecryptImg
-from cipher.RSA import RSA
+from cipher.RSA import RSA, checkHash
 from .forms import privateKeyForm
 
 from django.shortcuts import render
@@ -65,8 +66,9 @@ class DecryptionView(MyPhotoListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        D = self.request.session["D"]
         for photo in context["photos"]:
-            decoded_img = DecryptImg(photo)
+            decoded_img = DecryptImg(photo, D)
             photo.img = f"data:image/jpeg;base64,{decoded_img}"
         return context
 
@@ -84,8 +86,9 @@ class PhotoDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PhotoDetailView, self).get_context_data(**kwargs)
+        D = self.request.session["D"]
         photo = self.get_photo()
-        decoded_img = DecryptImg(photo)
+        decoded_img = DecryptImg(photo, D)
         context["dec_img"] = decoded_img
         return context
 
@@ -163,3 +166,25 @@ def privateKey(request):
     context = {}
     context['form'] = privateKeyForm()
     return render( request, "photoapp/privateKey.html", context)
+
+class PrivateKeyView(FormView, RedirectView):
+    template_name = "photoapp/privateKey.html"
+
+    form_class = privateKeyForm
+    
+    def get_success_url(self, **kwargs):
+        self.photo = self.kwargs.get('pk')
+        print(self.photo)
+        D_input = int(self.request.POST["key"])
+        D_hash = self.request.user.userkey.D
+        check = checkHash(D_input, D_hash)
+        if check:
+            self.request.session["D"]=D_input
+            if self.photo:
+                return reverse("photo:detail", kwargs={"pk": self.photo})
+            else:
+                return reverse("photo:decryptedList")
+        else:
+            reverse_lazy('photo:myList')
+
+    # success_url = get_redirect_url()

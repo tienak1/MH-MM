@@ -12,7 +12,7 @@
             <span><a href="{% url 'photo:share' photo.id %}"><i class="fas fa-share-square fa-lg"></i></a></span>
           </p>
         </div>
-        <a href="{% url 'photo:detail' photo.id %}" class="d-block mb-4 h-100">
+        <a href="{% url 'photo:privateKey' photo.id %}" class="d-block mb-4 h-100">
           <img src="{{photo.img}}" class="img-fluid rounded" alt="{{photo.title}}" />
         </a>
       </div>

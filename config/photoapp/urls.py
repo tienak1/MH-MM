@@ -13,7 +13,8 @@ from .views import (
     DecryptionView,
     SharedWithMePhotoListView,
     MyPhotoListView,
-    privateKey
+    privateKey,
+    PrivateKeyView
 )
 
 app_name = 'photo'
@@ -39,5 +40,7 @@ urlpatterns = [
 
     path('shared', SharedWithMePhotoListView.as_view(), name='sharedList'),
 
-    path('privateKey', privateKey, name='privateKey')    
+    path('privateKey/<int:pk>', PrivateKeyView.as_view(), name='privateKey'),    
+    path('privateKey/None', PrivateKeyView.as_view(), name='privateKey'), 
+    path('privateKey/', PrivateKeyView.as_view(), name='privateKey') 
 ]

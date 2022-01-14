@@ -220,10 +220,9 @@ class AESCipher:
         return img
 
 
-def DecryptImg(photo):
+def DecryptImg(photo, D):
     Ikey = Matrix.string2matrix(photo.key)
     N = photo.submitter.userkey.N
-    D = photo.submitter.userkey.D
     RSA_cipher = RSA()
     Ikey = RSA_cipher.decrypt(Ikey, D, N)
     cipher = AESCipher()
