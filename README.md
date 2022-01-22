@@ -10,6 +10,11 @@ Source code for a SitePoint article demonstrating how to build a photo sharing a
     - Logout
     - Sign-up
 - Image Uploads
+- Share image
+- Hybrid Cipher
+    - Encode/Decode image (Matrix cipher)
+    - Encode/Decode matrix cipher key (RSA)
+- Download decode image
 - Reused code with Django Template Language
 - Stylized pages with Bootstrap 5
 
@@ -20,10 +25,15 @@ Source code for a SitePoint article demonstrating how to build a photo sharing a
 ## SetUp
 
 Clone the repository:
-
+   - Original version: 
 ```bash
 git clone https://github.com/sitepoint-editors/Django-photo-app
 cd Django-photo-app/
+```
+   - My edited version:
+```bash
+git clone https://github.com/tienak1/MH-MM.git
+cd config/
 ```
 
 Create a virtual environment.
@@ -60,14 +70,6 @@ Run the project.
 
 ```bash
 python manage.py runserver
-```
-
-After make change in model:
-```bash
-python manage.py makemigrations
-```
-```bash
-python manage.py migrate
 ```
 
 Visit <http://localhost:8000/>.
