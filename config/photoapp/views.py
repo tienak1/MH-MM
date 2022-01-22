@@ -39,6 +39,8 @@ class MyPhotoListView(PhotoListView):
         
 class SharedWithMePhotoListView(PhotoListView):
 
+    template_name = 'photoapp/sharedList.html'
+
     def get_queryset(self):
         return self.model.objects.filter(share__username=self.request.user)
 
@@ -62,7 +64,7 @@ class PhotoTagListView(PhotoListView):
 
 class DecryptionView(MyPhotoListView):
 
-    template_name = 'photoapp/list.html'
+    template_name = 'photoapp/decryptedList.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -171,17 +173,25 @@ class PrivateKeyView(FormView, RedirectView):
     template_name = "photoapp/privateKey.html"
 
     form_class = privateKeyForm
-    
+
+    def get_photo(self):
+        return get_object_or_404(Photo, pk=self.kwargs.get('pk'))
+
     def get_success_url(self, **kwargs):
-        self.photo = self.kwargs.get('pk')
-        print(self.photo)
+        pk=self.kwargs.get('pk')
+        D_hash = None
+        if pk:
+            photo = self.get_photo()
+            D_hash = photo.submitter.userkey.D
+        else:
+            D_hash = self.request.user.userkey.D
         D_input = int(self.request.POST["key"])
-        D_hash = self.request.user.userkey.D
+
         check = checkHash(D_input, D_hash)
         if check:
             self.request.session["D"]=D_input
-            if self.photo:
-                return reverse("photo:detail", kwargs={"pk": self.photo})
+            if pk:
+                return reverse("photo:detail", kwargs={"pk": pk})
             else:
                 return reverse("photo:decryptedList")
         else:

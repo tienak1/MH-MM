@@ -3,7 +3,11 @@
 {% block body %}
 
 <div class="mx-auto">
-  <p>Please save your private key to view or send to share your photo: {{D}}</p>
+  <form>
+    <p>Please save your private key to view or send to share your photo:</p>
+      <input type="text" class="form-control" id="pKey" value="{{D}}" readonly>
+      <button class="btn btn-sm btn-success copy-button" onclick="CopyText()">Copy</button>
+  </form>
   <div class="text-center w-100">
     <p class="text-muted font-weight-bold">
       I saved my key
@@ -11,4 +15,15 @@
     </p>
   </div>
 </div>
+{% block scripts %}
+<script>
+  function CopyText() {
+  var text = document.getElementById('pKey')
+  text.select();
+  document.execCommand('copy')
+}
+</script>
+{% endblock scripts %}
 {% endblock body %}
+
+<!-- style="background:green; text-align:center;"  -->
